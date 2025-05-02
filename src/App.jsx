@@ -1,35 +1,35 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import getCustomers from "./getCustomers";
+import { useEffect, useState } from "react";
+import { Box, Tab } from '@mui/material';
+import { TabContext, TabList, TabPanel } from '@mui/lab';
 
-function App() {
-  const [count, setCount] = useState(0)
 
-  return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
-}
+export default function App() {
+    const [customers, setCustomers] = useState([]);
+    const [value, setValue] = useState("home");
 
-export default App
+    const handleChange = (event, newValue) => {
+        setValue(newValue);
+    };
+
+
+    return (
+        <Box sx={{ width: '100%', typography: 'body1' }}>
+
+            <TabContext value={value}>
+                <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
+                    <TabList onChange={handleChange}>
+                        <Tab label="Home" value="Home" />
+                        <Tab label="Customers" value="Customers" />
+                    </TabList>
+                </Box>
+                <TabPanel value="Home">Welcome!</TabPanel>
+                <TabPanel value="Customers"><getCustomers /></TabPanel>
+            </TabContext>
+        </Box>
+
+    )
+};
+
+
+
