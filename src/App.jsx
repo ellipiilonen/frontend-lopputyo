@@ -1,4 +1,5 @@
-import getCustomers from "./getCustomers";
+import GetTrainings from "./GetTrainings";
+import GetCustomers from "./GetCustomers";
 import { useEffect, useState } from "react";
 import { Box, Tab } from '@mui/material';
 import { TabContext, TabList, TabPanel } from '@mui/lab';
@@ -6,7 +7,7 @@ import { TabContext, TabList, TabPanel } from '@mui/lab';
 
 export default function App() {
     const [customers, setCustomers] = useState([]);
-    const [value, setValue] = useState("home");
+    const [value, setValue] = useState("Home");
 
     const handleChange = (event, newValue) => {
         setValue(newValue);
@@ -21,10 +22,12 @@ export default function App() {
                     <TabList onChange={handleChange}>
                         <Tab label="Home" value="Home" />
                         <Tab label="Customers" value="Customers" />
+                        <Tab label="Trainings" value="Trainings" />
                     </TabList>
                 </Box>
                 <TabPanel value="Home">Welcome!</TabPanel>
-                <TabPanel value="Customers"><getCustomers /></TabPanel>
+                <TabPanel value="Customers"><GetCustomers /></TabPanel>
+                <TabPanel value="Trainings"><GetTrainings /></TabPanel>
             </TabContext>
         </Box>
 
