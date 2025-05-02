@@ -1,10 +1,9 @@
 import { useState, useRef, useEffect } from "react";
-import Stack from '@mui/material/Stack';
 import { Container, Table, TableHead, TableCell, TableBody, TableRow, TextField } from "@mui/material";
-import { AgGridReact } from "ag-grid-react";
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import dayjs from "dayjs";
 dayjs.locale("fi");
+import { AgGridReact } from "ag-grid-react";
 
 
 import { AllCommunityModule, ModuleRegistry } from 'ag-grid-community';
@@ -14,6 +13,7 @@ ModuleRegistry.registerModules([AllCommunityModule]);
 
 function GetTrainings() {
     const [data, setData] = useState([]);
+    const gridRef = useRef();
 
     // fetchataan training data
     useEffect(() => {
@@ -27,36 +27,50 @@ function GetTrainings() {
             .catch(error => console.error(error));
     }, []);
 
-    const [columnDefs, setColumnDefs] = useState([
-        { field: "date" },
-        { field: "duration" },
-        { field: "activity" },
-        { field: "customer" }
-    ]);
+    const columns = [
+        {
+            field: "date",
+            headerName: "Date",
+            valueFormatter: (params) =>
+                dayjs(params.value).format("DD.MM.YYYY HH:mm"),
+            sortable: true,
+            filter: true,
+            flex: 1
+        },
+        {
+            field: "duration",
+            headerName: "Duration",
+            sortable: true,
+            filter: true,
+            flex: 1
+        },
+        {
+            field: "activity",
+            headerName: "Activity",
+            sortable: true,
+            filter: true,
+            flex: 1
+        },
+        {
+            valueGetter: (params) =>
+                `${params.data.customer.firstname} ${params.data.customer.lastname}`,
+            headerName: "Customer",
+            sortable: true,
+            filter: true,
+        }
+    ];
 
     return (
-        <Container>
-            <Table>
-                <TableHead>
-                    <TableRow>
-                        <TableCell>Date</TableCell>
-                        <TableCell>Duration</TableCell>
-                        <TableCell>Activity</TableCell>
-                        <TableCell>Customer</TableCell>
-                    </TableRow>
-                </TableHead>
-                <TableBody>
-                    {data.map((training) =>
-                        <TableRow key={training.id}>
-                            <TableCell>{dayjs(training.date).format('DD.MM.YYYY HH:mm')}</TableCell>
-                            <TableCell>{`${training.duration} minutes`}</TableCell>
-                            <TableCell>{training.activity}</TableCell>
-                            <TableCell>{`${training.customer.firstname} ${training.customer.lastname}`}</TableCell>
-                        </TableRow>
-                    )}
-                </TableBody>
-            </Table>
-        </Container>
+        <div>
+            <div style={{ width: 1000, height: 500 }}>
+                <AgGridReact
+                    ref={gridRef}
+                    rowData={data}
+                    columnDefs={columns}
+                    rowSelection="single"
+                />
+            </div>
+        </div>
     );
 
 };
