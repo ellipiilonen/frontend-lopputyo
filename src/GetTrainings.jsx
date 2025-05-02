@@ -49,7 +49,7 @@ function GetTrainings() {
                     {data.map((training) =>
                         <TableRow key={training.id}>
                             <TableCell>{dayjs(training.date).format('DD.MM.YYYY HH:mm')}</TableCell>
-                            <TableCell>{training.duration}</TableCell>
+                            <TableCell>{`${training.duration} minutes`}</TableCell>
                             <TableCell>{training.activity}</TableCell>
                             <TableCell>{`${training.customer.firstname} ${training.customer.lastname}`}</TableCell>
                         </TableRow>

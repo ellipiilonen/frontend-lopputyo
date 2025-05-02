@@ -1,4 +1,5 @@
 import { useState, useRef, useEffect } from "react";
+import { Container, Table, TableHead, TableCell, TableBody, TableRow, TextField } from "@mui/material";
 
 function GetCustomers() {
     const [data, setData] = useState([]);
@@ -15,39 +16,49 @@ function GetCustomers() {
             .catch(error => console.error(error));
     }, []);
 
+    const [columnDefs, setColumnDefs] = useState([
+        { field: "firstname" },
+        { field: "lastname" },
+        { field: "email" },
+        { field: "phone" },
+        { field: "streetaddress" },
+        { field: "postcode" },
+        { field: "city" },
+    ]);
 
     return (
-        <div>
-            <h2>Customers</h2>
-            <table>
-                <thead>
-                    <tr>
-                        <th>First Name</th>
-                        <th>Last Name</th>
-                        <th>Email</th>
-                        <th>Phone</th>
-                        <th>Street address</th>
-                        <th>Postcode</th>
-                        <th>City</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {data.map((customer) => (
-                        <tr key={customer._links.self.href}>
-                            <td>{customer.firstname}</td>
-                            <td>{customer.lastname}</td>
-                            <td>{customer.email}</td>
-                            <td>{customer.phone}</td>
-                            <td>{customer.streetaddress}</td>
-                            <td>{customer.postcode}</td>
-                            <td>{customer.city}</td>
-                        </tr>
-                    ))}
-                </tbody>
-            </table>
-        </div>
-    )
+        <Container>
+            <Table>
+                <TableHead>
+                    <TableRow>
+                        <TableCell>First name</TableCell>
+                        <TableCell>Last name</TableCell>
+                        <TableCell>Email</TableCell>
+                        <TableCell>Phone</TableCell>
+                        <TableCell>Street address</TableCell>
+                        <TableCell>Postal code</TableCell>
+                        <TableCell>City</TableCell>
+                    </TableRow>
+                </TableHead>
+                <TableBody>
+                    {data.map((customer) =>
+                        <TableRow key={customer._links.self.href}>
+                            <TableCell>{customer.firstname}</TableCell>
+                            <TableCell>{customer.lastname}</TableCell>
+                            <TableCell>{customer.email}</TableCell>
+                            <TableCell>{customer.phone}</TableCell>
+                            <TableCell>{customer.streetaddress}</TableCell>
+                            <TableCell>{customer.postcode}</TableCell>
+                            <TableCell>{customer.city}</TableCell>
+                        </TableRow>
+                    )}
+                </TableBody>
+            </Table>
+        </Container>
+    );
 
-}
+};
+
+
 
 export default GetCustomers
