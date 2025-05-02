@@ -1,12 +1,7 @@
 import { useState, useRef, useEffect } from "react";
-import { Container, Table, TableHead, TableCell, TableBody, TableRow, TextField } from "@mui/material";
-import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-import dayjs from "dayjs";
-dayjs.locale("fi");
-import { AgGridReact } from "ag-grid-react";
-
 
 import { AllCommunityModule, ModuleRegistry } from 'ag-grid-community';
+import TrainingsTable from "./TrainingsTable";
 
 // Register all Community features
 ModuleRegistry.registerModules([AllCommunityModule]);
@@ -27,49 +22,10 @@ function GetTrainings() {
             .catch(error => console.error(error));
     }, []);
 
-    const columns = [
-        {
-            field: "date",
-            headerName: "Date",
-            valueFormatter: (params) =>
-                dayjs(params.value).format("DD.MM.YYYY HH:mm"),
-            sortable: true,
-            filter: true,
-            flex: 1
-        },
-        {
-            field: "duration",
-            headerName: "Duration",
-            sortable: true,
-            filter: true,
-            flex: 1
-        },
-        {
-            field: "activity",
-            headerName: "Activity",
-            sortable: true,
-            filter: true,
-            flex: 1
-        },
-        {
-            valueGetter: (params) =>
-                `${params.data.customer.firstname} ${params.data.customer.lastname}`,
-            headerName: "Customer",
-            sortable: true,
-            filter: true,
-        }
-    ];
 
     return (
         <div>
-            <div style={{ width: 1000, height: 500 }}>
-                <AgGridReact
-                    ref={gridRef}
-                    rowData={data}
-                    columnDefs={columns}
-                    rowSelection="single"
-                />
-            </div>
+            <TrainingsTable data={data} />
         </div>
     );
 

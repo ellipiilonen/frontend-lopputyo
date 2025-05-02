@@ -1,12 +1,12 @@
 import GetTrainings from "./GetTrainings";
-import GetCustomers from "./GetCustomers";
 import { useEffect, useState } from "react";
 import { Box, Tab } from '@mui/material';
 import { TabContext, TabList, TabPanel } from '@mui/lab';
+import CustomersTable from "./CustomersTable";
+import GetCustomers from "./GetCustomers";
 
 
 export default function App() {
-    const [customers, setCustomers] = useState([]);
     const [value, setValue] = useState("Home");
 
     const handleChange = (event, newValue) => {
