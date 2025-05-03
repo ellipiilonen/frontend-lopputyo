@@ -1,6 +1,8 @@
 import { useState, useRef, useEffect } from "react";
 import CustomersTable from "./CustomersTable";
 
+
+// Fetchataan asiakkaat
 function GetCustomers() {
     const [data, setData] = useState([]);
 

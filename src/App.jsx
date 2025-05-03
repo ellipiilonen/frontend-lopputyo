@@ -13,7 +13,7 @@ export default function App() {
         setValue(newValue);
     };
 
-
+    // Resetoidaan database
     useEffect(() => {
         console.log("Resetoidaan database");
         fetch("https://customer-rest-service-frontend-personaltrainer.2.rahtiapp.fi/reset", {

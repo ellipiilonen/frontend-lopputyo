@@ -6,6 +6,8 @@ import TrainingsTable from "./TrainingsTable";
 // Register all Community features
 ModuleRegistry.registerModules([AllCommunityModule]);
 
+
+// Fetchataan harjoitukset
 function GetTrainings() {
     const [data, setData] = useState([]);
     const gridRef = useRef();
