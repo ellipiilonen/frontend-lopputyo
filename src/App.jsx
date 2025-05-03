@@ -14,6 +14,20 @@ export default function App() {
     };
 
 
+    useEffect(() => {
+        console.log("Resetoidaan database");
+        fetch("https://customer-rest-service-frontend-personaltrainer.2.rahtiapp.fi/reset", {
+            method: "POST"
+        })
+            .then(response => {
+                if (!response.ok) throw new Error(`Virhe haussa: ${response.status}`);
+                console.log("Resetointi onnistui");
+            })
+            .catch(error => {
+                console.error("Resetointi epäonnistui", error);
+            });
+    }, []);
+
     return (
         <Box sx={{ width: '100%', typography: 'body1' }}>
 

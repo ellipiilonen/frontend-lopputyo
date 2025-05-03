@@ -46,7 +46,7 @@ function TrainingsTable({ data }) {
 
     return (
         <div>
-            <div style={{ width: 1000, height: 800 }}>
+            <div style={{ width: 1000, height: 500 }}>
                 <AgGridReact
                     ref={gridRef}
                     rowData={data}
