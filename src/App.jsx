@@ -1,16 +1,20 @@
-import GetTrainings from "./GetTrainings";
+import { getTrainings, addTraining, deleteTraining } from "./TrainingsApi";
 import { useEffect, useState } from "react";
 import { Box, Tab } from '@mui/material';
 import { TabContext, TabList, TabPanel } from '@mui/lab';
 import CustomersTable from "./CustomersTable";
 import { getCustomers, addCustomer, deleteCustomer, updateCustomer } from "./CustomersApi";
 import DeleteDialog from "./DeleteDialog";
+import TrainingsTable from "./TrainingsTable";
+import DeleteTrainingDialog from "./DeleteTrainingDialog";
 
 
 export default function App() {
     const [value, setValue] = useState("Home");
     const [customers, setCustomers] = useState([]);
+    const [trainings, setTrainings] = useState([]);
     const [rmCustomer, setRmCustomer] = useState(null);
+    const [rmTraining, setRmTraining] = useState(null);
 
     const handleChange = (event, newValue) => {
         setValue(newValue);
@@ -31,6 +35,7 @@ export default function App() {
             });
     }, []);
 
+    // Asiakkaan poiston vahvistus
     async function confirmDeleteCustomer(customer) {
         const success = await deleteCustomer(customer);
         if (!success) {
@@ -40,12 +45,30 @@ export default function App() {
         setCustomers(await getCustomers());
     }
 
+    // Harjoituksen poiston vahvistus
+    async function confirmDeleteTraining(training) {
+        const success = await deleteTraining(training);
+        if (!success) {
+            console.error("Harjoituksen poisto epäonnistui");
+        }
+        setRmTraining(null);
+        setTrainings(await getTrainings());
+    }
+
+    // Lataa asiakkaat
     async function loadCustomers() {
         setCustomers(await getCustomers());
     }
 
+    // Lataa harjoitukset
+    async function loadTrainings() {
+        setTrainings(await getTrainings());
+    }
+
     useEffect(() => {
-        getCustomers().then(customerArray => setCustomers(customerArray))
+        getCustomers().then(customerArray => setCustomers(customerArray));
+
+        getTrainings().then(trainingArray => setTrainings(trainingArray));
     }, []);
 
 
@@ -61,6 +84,7 @@ export default function App() {
                     </TabList>
                 </Box>
                 <TabPanel value="Home">Welcome!</TabPanel>
+
                 <TabPanel value="Customers">
                     <CustomersTable data={customers}
                         addCustomer={(customer, setCustomer, setCustomerData) =>
@@ -69,7 +93,18 @@ export default function App() {
                         loadCustomers={loadCustomers} />
                     {rmCustomer && <DeleteDialog customer={rmCustomer} ok={confirmDeleteCustomer} cancel={() => setRmCustomer(null)} />}
                 </TabPanel>
-                <TabPanel value="Trainings"><GetTrainings /></TabPanel>
+
+                <TabPanel value="Trainings">
+                    <TrainingsTable tData={trainings}
+                        customers={customers}
+                        addTraining={(training, setTraining, setTrainingData) =>
+                            addTraining(training, setTraining, setTrainingData)}
+                        loadTrainings={loadTrainings}
+                        deleteTraining={training => setRmTraining(training)} />
+                    {rmTraining && <DeleteTrainingDialog training={rmTraining} ok={confirmDeleteTraining} cancel={() => setRmTraining(null)} />}
+
+                </TabPanel>
+
             </TabContext>
         </Box>
     </>

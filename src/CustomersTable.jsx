@@ -20,7 +20,7 @@ export function CustomersTable({ data, addCustomer, deleteCustomer, loadCustomer
         city: ""
     });
 
-    // Määritellään taulukko
+    // Määritetään taulukko
     const columns = useMemo(() => [{ field: "firstname", headerName: "First name", filter: true, flex: 1 },
     { field: "lastname", headerName: "Last name", filter: true, flex: 1 },
     { field: "email", headerName: "Email", filter: true, flex: 1 },
