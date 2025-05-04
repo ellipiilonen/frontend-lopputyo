@@ -28,7 +28,7 @@ export async function addTraining(training, setTraining, setTrainingData) {
         headers: {
             "Content-Type": "application/json"
         },
-        body: JSON.stringify(trainingToSend)
+        body: JSON.stringify(training)
     })
     if (!response.ok) {
         throw new Error(`Virhe lisätessä harjoitusta: ${response.status}`);
