@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { Box, Tab } from '@mui/material';
 import { TabContext, TabList, TabPanel } from '@mui/lab';
 import CustomersTable from "./CustomersTable";
-import { getCustomers, addCustomer, deleteCustomer, updateCustomer } from "./CustomersApi";
+import { getCustomers, addCustomer, deleteCustomer } from "./CustomersApi";
 import DeleteDialog from "./DeleteDialog";
 import TrainingsTable from "./TrainingsTable";
 import DeleteTrainingDialog from "./DeleteTrainingDialog";

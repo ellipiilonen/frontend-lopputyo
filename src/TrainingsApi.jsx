@@ -1,7 +1,6 @@
-import { useState, useRef, useEffect } from "react";
+
 
 import { AllCommunityModule, ModuleRegistry } from 'ag-grid-community';
-import TrainingsTable from "./TrainingsTable";
 
 // Register all Community features
 ModuleRegistry.registerModules([AllCommunityModule]);

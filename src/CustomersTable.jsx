@@ -1,9 +1,8 @@
-import { Box, Button, Stack, TextField } from "@mui/material";
+import { Button, Stack, TextField } from "@mui/material";
 import { AgGridReact } from "ag-grid-react";
 import { useEffect, useMemo, useRef, useState } from "react";
-import { getCustomers, addCustomer, updateCustomer } from "./CustomersApi";
+import { updateCustomer } from "./CustomersApi";
 import EditCustomer from "./EditCustomer";
-import { SettingsPowerRounded } from "@mui/icons-material";
 
 
 export function CustomersTable({ data, addCustomer, deleteCustomer, loadCustomers }) {

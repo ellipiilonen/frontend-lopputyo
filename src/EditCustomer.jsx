@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { Button, Dialog, DialogActions, DialogContent, DialogTitle, TextField } from '@mui/material';
-import { updateCustomer } from "./CustomersApi";
 
 export default function EditCustomer({ updateCustomer, params, loadCustomers }) {
     const [customer, setCustomer] = useState(params.data);

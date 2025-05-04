@@ -1,5 +1,4 @@
-import { useState, useRef, useEffect } from "react";
-import CustomersTable from "./CustomersTable";
+
 
 
 export async function getCustomers() {
@@ -24,7 +23,7 @@ export async function addCustomer(customer, setCustomer, setCustomerData) {
         body: JSON.stringify(customer)
     })
     if (!response.ok) {
-        throw new Error(V`irhe lisätessä asiakasta: ${response.status}`);
+        throw new Error(`Virhe lisätessä asiakasta: ${response.status}`);
     }
 
     const data = await response.json();
