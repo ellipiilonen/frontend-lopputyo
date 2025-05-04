@@ -28,8 +28,17 @@ export function CustomersTable({ data, addCustomer, deleteCustomer, editCustomer
     {
         field: "edit", headerName: "Edit", flex: 1,
         cellRenderer: (params) => (
-            <Button size="small" onClick={() => editCustomer(params.data)}> Edit </Button>),
+            <Button variant="outlined" size="small" onClick={() => editCustomer(params.data)}> Edit </Button>),
     },
+    {
+        field: "delete", headerName: "Delete", flex: 1,
+        cellRenderer: (params) => {
+            const customer = params.data;
+            return <Button
+                variant="outlined" color="error" size="small"
+                onClick={() => deleteCustomer(customer)}>Delete</Button>
+        }
+    }
     ];
 
     useEffect(() => {
@@ -42,7 +51,6 @@ export function CustomersTable({ data, addCustomer, deleteCustomer, editCustomer
         const { name, value } = event.target;
         setCustomer({ ...customer, [name]: value });
     }
-
 
 
     return (
@@ -87,8 +95,7 @@ export function CustomersTable({ data, addCustomer, deleteCustomer, editCustomer
                     name="city"
                     onChange={handleChange}
                     value={customer.city} />
-                <Button onClick={() => addCustomer(customer, setCustomer, setCustomerData)}>Add</Button>
-                <Button onClick={() => deleteCustomer(customer)}>Delete</Button>
+                <Button variant="outlined" onClick={() => addCustomer(customer, setCustomer, setCustomerData)}>Add</Button>
             </Stack>
             <h2>Customer list:</h2>
             <div>

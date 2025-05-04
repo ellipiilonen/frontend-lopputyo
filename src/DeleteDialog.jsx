@@ -12,12 +12,12 @@ export default function DeleteCustomerDialog({ customer, ok, cancel }) {
         </DialogTitle>
         <DialogContent>
             <DialogContentText id="alert-dialog-description">
-                Are you sure you want to delete the customer {Customer.firstname} {customer.lastname}?
+                Are you sure you want to delete the customer {customer.firstname} {customer.lastname}?
             </DialogContentText>
         </DialogContent>
         <DialogActions>
             <Button onClick={() => cancel()}>Cancel</Button>
-            <Button onClick={() => ok(customer)} autoFocus>Delete</Button>
+            <Button color="error" onClick={() => ok(customer)} autoFocus>Delete</Button>
         </DialogActions>
     </Dialog>
 }

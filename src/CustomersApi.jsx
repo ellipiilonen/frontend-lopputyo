@@ -45,10 +45,10 @@ export async function addCustomer(customer, setCustomer, setCustomerData) {
 
 
 // Asiakkaan poisto:
-export async function deleteCustomer(customerId) {
-    const response = await fetch("https://customer-rest-service-frontend-personaltrainer.2.rahtiapp.fi/api/customers/{id}", {
-        method: "DELETE",
-    })
+export async function deleteCustomer(customer) {
+    const response = await fetch(customer._links.customer.href, {
+        method: 'DELETE'
+    });
     if (!response.ok) {
         throw new Error(`Virhe poistaessa asiakasta: ${response.status}`);
     }
