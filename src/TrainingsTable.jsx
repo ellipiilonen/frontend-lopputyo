@@ -2,13 +2,13 @@ import { AgGridReact } from "ag-grid-react";
 import { useEffect, useRef, useMemo, useState } from "react";
 import dayjs from "dayjs";
 dayjs.locale("fi");
-import { addTraining, getTrainings } from "./TrainingsApi";
+import { addTraining, } from "./TrainingsApi";
 import { Button, FormControl, InputLabel, MenuItem, Select, Stack, TextField } from "@mui/material";
 import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import InputAdornment from '@mui/material/InputAdornment';
 
-function TrainingsTable({ tData, customers, loadTrainings, deleteTraining }) {
+function TrainingsTable({ tData, customers, deleteTraining }) {
 
     const gridRef = useRef();
     const [trainingData, setTrainingData] = useState([]);
@@ -19,6 +19,7 @@ function TrainingsTable({ tData, customers, loadTrainings, deleteTraining }) {
         customer: ""
     });
 
+    // Taulukon määrittely
     const columns = useMemo(() => [
         {
             field: "date", headerName: "Date",
@@ -48,7 +49,7 @@ function TrainingsTable({ tData, customers, loadTrainings, deleteTraining }) {
                 return <Button
                     variant="outlined" color="error" size="small"
                     onClick={() => deleteTraining(training)}>Delete</Button>
-            }, width: 100,
+            },
         },
     ], []);
 
@@ -97,7 +98,7 @@ function TrainingsTable({ tData, customers, loadTrainings, deleteTraining }) {
                     name="activity"
                     onChange={handleChange}
                     value={training.activity} />
-                <FormControl fullWidth>
+                <FormControl sx={{ width: 200 }}>
                     <InputLabel id="select-customer">Customer</InputLabel>
                     <Select
                         label="Customer"
@@ -116,7 +117,7 @@ function TrainingsTable({ tData, customers, loadTrainings, deleteTraining }) {
             </Stack>
             <div>
                 <h2>Trainings list:</h2>
-                <div style={{ width: 1000, height: 500 }}>
+                <div style={{ width: 1500, height: 500 }}>
                     <AgGridReact
                         ref={gridRef}
                         rowData={trainingData}
