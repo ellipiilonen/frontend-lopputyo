@@ -3,11 +3,14 @@ import { useEffect, useState } from "react";
 import { Box, Tab } from '@mui/material';
 import { TabContext, TabList, TabPanel } from '@mui/lab';
 import CustomersTable from "./CustomersTable";
-import GetCustomers from "./GetCustomers";
+import { getCustomers, addCustomer, deleteCustomer } from "./CustomersApi";
+import DeleteDialog from "./DeleteDialog";
 
 
 export default function App() {
     const [value, setValue] = useState("Home");
+    const [customers, setCustomers] = useState([]);
+    const [rmCustomer, setRmCustomer] = useState(null);
 
     const handleChange = (event, newValue) => {
         setValue(newValue);
@@ -28,7 +31,21 @@ export default function App() {
             });
     }, []);
 
-    return (
+    async function confirmDeleteCustomer(customer) {
+        const success = await deleteCustomer(customer);
+        if (!success) {
+            console.error("Asiakkaan poisto epäonnistui");
+        }
+        setRmCustomer(null);
+        setCustomers(await getCustomers());
+    }
+
+    useEffect(() => {
+        getCustomers().then(customerArray => setCustomers(customerArray))
+    }, []);
+
+
+    return (<>
         <Box sx={{ width: '100%', typography: 'body1' }}>
 
             <TabContext value={value}>
@@ -40,11 +57,17 @@ export default function App() {
                     </TabList>
                 </Box>
                 <TabPanel value="Home">Welcome!</TabPanel>
-                <TabPanel value="Customers"><GetCustomers /></TabPanel>
+                <TabPanel value="Customers">
+                    <CustomersTable data={customers}
+                        addCustomer={(customer, setCustomer, setCustomerData) =>
+                            addCustomer(customer, setCustomer, setCustomerData)}
+                        deleteCustomer={customer => setRmCustomer(customer)} />
+                    {rmCustomer && <DeleteDialog customer={rmCustomer} ok={confirmDeleteCustomer} cancel={() => setRmCustomer(null)} />}
+                </TabPanel>
                 <TabPanel value="Trainings"><GetTrainings /></TabPanel>
             </TabContext>
         </Box>
-
+    </>
     )
 };
 

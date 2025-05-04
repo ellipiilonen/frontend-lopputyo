@@ -3,7 +3,7 @@ import { AgGridReact } from "ag-grid-react";
 import { useEffect, useRef, useState } from "react";
 
 
-function CustomersTable({ data }) {
+export function CustomersTable({ data, addCustomer, deleteCustomer, editCustomer }) {
 
     const [customerData, setCustomerData] = useState([]);
     const gridRef = useRef();
@@ -18,53 +18,18 @@ function CustomersTable({ data }) {
     });
 
     // Määritellään taulukko
-    const columns = [
-        {
-            field: "firstname",
-            headerName: "First name",
-            sortable: true,
-            filter: true,
-            flex: 1
-        },
-        {
-            field: "lastname",
-            headerName: "Last name",
-            sortable: true,
-            filter: true,
-            flex: 1
-        },
-        {
-            field: "email",
-            headerName: "Email",
-            sortable: true,
-            filter: true,
-            flex: 1
-        }, {
-            field: "phone",
-            headerName: "Phone",
-            sortable: true,
-            filter: true,
-            flex: 1
-        }, {
-            field: "streetaddress",
-            headerName: "Street address",
-            sortable: true,
-            filter: true,
-            flex: 1
-        }, {
-            field: "postcode",
-            headerName: "Postal code",
-            sortable: true,
-            filter: true,
-            flex: 1
-        }, {
-            field: "city",
-            headerName: "City",
-            sortable: true,
-            filter: true,
-            flex: 1
-        },
-
+    const columns = [{ field: "firstname", headerName: "First name", filter: true, flex: 1 },
+    { field: "lastname", headerName: "Last name", filter: true, flex: 1 },
+    { field: "email", headerName: "Email", filter: true, flex: 1 },
+    { field: "phone", headerName: "Phone", filter: true, flex: 1 },
+    { field: "streetaddress", headerName: "Street address", filter: true, flex: 1 },
+    { field: "postcode", headerName: "Postal code", filter: true, flex: 1 },
+    { field: "city", headerName: "City", filter: true, flex: 1 },
+    {
+        field: "edit", headerName: "Edit", flex: 1,
+        cellRenderer: (params) => (
+            <Button size="small" onClick={() => editCustomer(params.data)}> Edit </Button>),
+    },
     ];
 
     useEffect(() => {
@@ -78,44 +43,11 @@ function CustomersTable({ data }) {
         setCustomer({ ...customer, [name]: value });
     }
 
-    // Asiakkaan lisäys
-    const addCustomer = () => {
-        console.log("Asiakkaan lisäys");
-        fetch("https://customer-rest-service-frontend-personaltrainer.2.rahtiapp.fi/api/customers", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify(customer)
-        })
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error("Virhe lisätessä asiakasta");
-                }
-                return response.json();
-            })
-            .then(data => {
-                console.log("Asiakkaan lisääminen onnistui");
-                setCustomerData((prevData) => [...prevData, data]);
-            });
-        // Lomakkeen nollaus:
-        setCustomer({
-            firstname: "",
-            lastname: "",
-            email: "",
-            phone: "",
-            streetaddress: "",
-            postcode: "",
-            city: ""
-        })
-            .catch(error => {
-                console.error("Virhe lisäyksessä:", error);
-            });
-    };
 
 
     return (
         <>
+            <h2>Add a customer:</h2>
             <Stack
                 mt={2}
                 direction="row"
@@ -155,14 +87,17 @@ function CustomersTable({ data }) {
                     name="city"
                     onChange={handleChange}
                     value={customer.city} />
-                <Button onClick={addCustomer}>Add</Button>
+                <Button onClick={() => addCustomer(customer, setCustomer, setCustomerData)}>Add</Button>
+                <Button onClick={() => deleteCustomer(customer)}>Delete</Button>
             </Stack>
+            <h2>Customer list:</h2>
             <div>
-                <div style={{ width: 1000, height: 800 }}>
+                <div style={{ marginTop: 30, width: 1500, height: 800 }}>
                     <AgGridReact
                         ref={gridRef}
                         rowData={customerData}
                         columnDefs={columns}
+                        rowSelection="single"
                     />
                 </div>
             </div>
