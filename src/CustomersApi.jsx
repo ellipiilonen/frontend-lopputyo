@@ -55,3 +55,17 @@ export async function deleteCustomer(customer) {
     return true;
 };
 
+// Asiakkaan muokkaus:
+export async function updateCustomer(customer) {
+    const response = await fetch(customer._links.customer.href, {
+        method: 'PUT',
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify(customer),
+    });
+    if (!response.ok) {
+        throw new Error(`Virhe asiakkaan muokkauksessa: ${response.status}`);
+    }
+    return true;
+}

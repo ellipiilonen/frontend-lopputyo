@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { Box, Tab } from '@mui/material';
 import { TabContext, TabList, TabPanel } from '@mui/lab';
 import CustomersTable from "./CustomersTable";
-import { getCustomers, addCustomer, deleteCustomer } from "./CustomersApi";
+import { getCustomers, addCustomer, deleteCustomer, updateCustomer } from "./CustomersApi";
 import DeleteDialog from "./DeleteDialog";
 
 
@@ -40,6 +40,10 @@ export default function App() {
         setCustomers(await getCustomers());
     }
 
+    async function loadCustomers() {
+        setCustomers(await getCustomers());
+    }
+
     useEffect(() => {
         getCustomers().then(customerArray => setCustomers(customerArray))
     }, []);
@@ -61,7 +65,8 @@ export default function App() {
                     <CustomersTable data={customers}
                         addCustomer={(customer, setCustomer, setCustomerData) =>
                             addCustomer(customer, setCustomer, setCustomerData)}
-                        deleteCustomer={customer => setRmCustomer(customer)} />
+                        deleteCustomer={customer => setRmCustomer(customer)}
+                        loadCustomers={loadCustomers} />
                     {rmCustomer && <DeleteDialog customer={rmCustomer} ok={confirmDeleteCustomer} cancel={() => setRmCustomer(null)} />}
                 </TabPanel>
                 <TabPanel value="Trainings"><GetTrainings /></TabPanel>

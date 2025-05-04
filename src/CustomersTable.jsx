@@ -1,9 +1,12 @@
 import { Box, Button, Stack, TextField } from "@mui/material";
 import { AgGridReact } from "ag-grid-react";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
+import { getCustomers, addCustomer, updateCustomer } from "./CustomersApi";
+import EditCustomer from "./EditCustomer";
+import { SettingsPowerRounded } from "@mui/icons-material";
 
 
-export function CustomersTable({ data, addCustomer, deleteCustomer, editCustomer }) {
+export function CustomersTable({ data, addCustomer, deleteCustomer, loadCustomers }) {
 
     const [customerData, setCustomerData] = useState([]);
     const gridRef = useRef();
@@ -18,7 +21,7 @@ export function CustomersTable({ data, addCustomer, deleteCustomer, editCustomer
     });
 
     // Määritellään taulukko
-    const columns = [{ field: "firstname", headerName: "First name", filter: true, flex: 1 },
+    const columns = useMemo(() => [{ field: "firstname", headerName: "First name", filter: true, flex: 1 },
     { field: "lastname", headerName: "Last name", filter: true, flex: 1 },
     { field: "email", headerName: "Email", filter: true, flex: 1 },
     { field: "phone", headerName: "Phone", filter: true, flex: 1 },
@@ -26,9 +29,12 @@ export function CustomersTable({ data, addCustomer, deleteCustomer, editCustomer
     { field: "postcode", headerName: "Postal code", filter: true, flex: 1 },
     { field: "city", headerName: "City", filter: true, flex: 1 },
     {
-        field: "edit", headerName: "Edit", flex: 1,
-        cellRenderer: (params) => (
-            <Button variant="outlined" size="small" onClick={() => editCustomer(params.data)}> Edit </Button>),
+        cellRenderer: (params) => <EditCustomer
+            updateCustomer={updateCustomer}
+            params={params}
+            loadCustomers={loadCustomers}
+        />
+
     },
     {
         field: "delete", headerName: "Delete", flex: 1,
@@ -37,9 +43,9 @@ export function CustomersTable({ data, addCustomer, deleteCustomer, editCustomer
             return <Button
                 variant="outlined" color="error" size="small"
                 onClick={() => deleteCustomer(customer)}>Delete</Button>
-        }
-    }
-    ];
+        }, width: 100,
+    },
+    ], []);
 
     useEffect(() => {
         if (data) {
@@ -51,7 +57,6 @@ export function CustomersTable({ data, addCustomer, deleteCustomer, editCustomer
         const { name, value } = event.target;
         setCustomer({ ...customer, [name]: value });
     }
-
 
     return (
         <>
